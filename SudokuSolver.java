@@ -29,11 +29,14 @@ public class SudokuSolver implements ISudokuSolver {
 	the value 0.
 	*/
 	public void setValue(int col, int row, int value) {
-		if (value >= 0 && value < 10){
-			if(col < size || row < size ){
-				puzzle[col][row] = value;
-			}
+		if(col < puzzle.length || row < puzzle[0].length ){
+				return
 		}
+		if (value >= 0 && value < 10){
+			puzzle[col][row] = value;
+		}
+		
+		
 		
 	}
 
