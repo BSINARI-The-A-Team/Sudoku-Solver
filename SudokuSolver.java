@@ -47,21 +47,21 @@ public class SudokuSolver implements ISudokuSolver {
 	function you can initialize auxiliary datastructures for FC algorithm.
 	*/
 	public void setup(int size1) {
-    size = size1;
-    int n = size * size;
-    
-    puzzle = new int[n][n];
-    
-    D = new ArrayList<ArrayList<Integer>>(n * n);
-    
-    for (int i = 0; i < n * n; i++) {
-        ArrayList<Integer> domain = new ArrayList<Integer>();
-        for (int val = 1; val <= 9; val++) {
-            domain.add(val);
-        }
-        D.add(domain);
-    }
-}
+		size = size1;
+		int n = size * size;
+		
+		puzzle = new int[n][n];
+		
+		D = new ArrayList<ArrayList<Integer>>(n * n);
+		
+		for (int i = 0; i < n * n; i++) {
+			ArrayList<Integer> domain = new ArrayList<Integer>();
+			for (int val = 1; val <= 9; val++) {
+				domain.add(val);
+			}
+			D.add(domain);
+		}
+	}
 
 	/*
 	The most interesting (and hard) method to implement is the function solve().
