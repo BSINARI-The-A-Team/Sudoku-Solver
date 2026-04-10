@@ -67,12 +67,54 @@ public class SudokuSolver implements ISudokuSolver {
 		puzzle = p;
 	}
 	
-	
+
+		private int getFirstZeroIndex(ArrayList<Integer> asn){
+			int index = 0;
+			for (int i = 0; i < asn.size()-1; i++) {
+				if(asn.get(i) == 0){
+					index = i;
+					break;
+				}
+			}
+			return index;
+		}
 		//---------------------------------------------------------------------------------
 		//YOUR TASK:  Implement FC(asn)
 		//---------------------------------------------------------------------------------
 		public ArrayList FC(ArrayList<Integer> asn) {
-	
+			if (!asn.contains(0)) {
+				return asn;
+			}
+			int X = getFirstZeroIndex(asn);
+
+			// Make deep copy of the old domain by 
+			// creating them as separate objects
+			ArrayList<ArrayList<Integer>> Dold = new ArrayList<>();
+			for (ArrayList<Integer> domain : D) {
+				Dold.add(new ArrayList<>(domain));
+			}
+			//------------------------------------
+
+			for (Integer V : D.get(X)) { // for all V ∈ DX do
+				if (AC_FC(X, V)){ // if AC-FC(X, V ) then
+					asn.set(X, V); // asn[X] ← V
+					ArrayList<Integer> R = FC(asn); // R ←FC(asn)
+					if (R != null) { // if R 6= fail then
+						return R; // return R
+					}
+					asn.set(X,0); // asn[X] ← 0
+					
+					D = new ArrayList<>();
+					for (ArrayList<Integer> oldDomain : Dold) {
+						D.add(new ArrayList<>(oldDomain));
+					}
+				} else {
+					D = new ArrayList<>();
+					for (ArrayList<Integer> oldDomain : Dold) {
+						D.add(new ArrayList<>(oldDomain));
+					}
+				}
+			}
 			return null;//failure
 		}
 
@@ -101,7 +143,7 @@ public class SudokuSolver implements ISudokuSolver {
 		//------------------------------------------------------------------
 		public boolean AC_FC(Integer X, Integer V){
 			//Reduce domain Dx
-			D.get(X).clear();
+			D.get(X).clear();	
 			D.get(X).add(V);
 			
 			//Put in Q all relevant Y where Y>X
