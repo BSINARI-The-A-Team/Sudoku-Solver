@@ -11,10 +11,32 @@ public class SudokuSolver implements ISudokuSolver {
 		return puzzle;
 	}
 
+	/*
+	setValue(col, row, value) inserts the specified value in the specified 
+	positioni n the puzzle given by a column number and a row number. 
+	Again, the numbering starts with the 0th column and the 0th row in the upper left 
+	corner of the puzzle. Inserted values should be in the legal range (1-9 for a normal
+	sudoku), and these should only be inserted in places that correspond to places
+	in the sudoku; the method should therefore check this before insertion. In order
+	to be able to erase already inserted values, it should also be possible to insert
+	the value 0.
+	*/
 	public void setValue(int col, int row, int value) {
 		puzzle[col][row] = value;
 	}
 
+	/*
+	The setup() function initializes a sudoku puzzle of the specified size, such
+	that all entries are empty (the array contains 0s). The size is given in number 
+	of blocks in a row, ie. the size is 3 for a normal sized sudoku. In this
+	function you can initialize auxiliary datastructures for FC algorithm. The
+	readInPuzzle(puzzle-array) reads in an 2D-array and stores it as the current
+	content of the puzzle. This is done to make a more efficient way of reading in a
+	predefined puzzle, if you want to avoid initializing a puzzle by clicking and using
+	setValue function. Before reading in the puzzle, the method should check if
+	the specified array has the right dimensions and legal values according to the
+	size of the puzzle.
+	*/
 	public void setup(int size1) {
 		size = size1;
 		puzzle = new int[size*size][size*size];
@@ -24,7 +46,14 @@ public class SudokuSolver implements ISudokuSolver {
 		
 	}
 
-
+	/*
+	The most interesting (and hard) method to implement is the function solve().
+	This method should check if the puzzle with the current content can be solved
+	or not and return true, if it is solvable and false otherwise. If the puzzle is solvable, 
+	the puzzle should furthermore be solved and the result saved, such that
+	when getPuzzle() is called subsequently, it will return the content of the full
+	solution. To solve the puzzle, the FC algorithm should be used.
+	*/
 	public boolean solve() {
 		ArrayList<Integer> asn = GetAssignment(puzzle);
 		
@@ -335,7 +364,13 @@ public class SudokuSolver implements ISudokuSolver {
 			return asn;
 		}	
 		
-	
+		/*
+		getPuzzle() returns the content of the sudoku puzzle as a 2 dimensional
+		array of integers. If there are no inserted values in the puzzle the array should
+		contain zeros in all entries. If a value has been inserted at a specific place, then
+		the corresponding entry in the array should have that particular value. The
+		puzzle has entry (0,0) in the upper left corner
+		*/
 		public int[][] GetPuzzle(ArrayList asn) {
 			int[][] p = new int[size*size][size*size];
 			for (int i=0; i<size*size; i++) {
