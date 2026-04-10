@@ -7,6 +7,13 @@ public class SudokuSolver implements ISudokuSolver {
 	int size;
 	ArrayList<ArrayList<Integer>> D; //= new ArrayList<ArrayList<Integer>>();
 	
+	/*
+	getPuzzle() returns the content of the sudoku puzzle as a 2 dimensional
+	array of integers. If there are no inserted values in the puzzle the array should
+	contain zeros in all entries. If a value has been inserted at a specific place, then
+	the corresponding entry in the array should have that particular value. The
+	puzzle has entry (0,0) in the upper left corner 
+	*/
 	public int[][] getPuzzle() {
 		return puzzle;
 	}
@@ -29,13 +36,7 @@ public class SudokuSolver implements ISudokuSolver {
 	The setup() function initializes a sudoku puzzle of the specified size, such
 	that all entries are empty (the array contains 0s). The size is given in number 
 	of blocks in a row, ie. the size is 3 for a normal sized sudoku. In this
-	function you can initialize auxiliary datastructures for FC algorithm. The
-	readInPuzzle(puzzle-array) reads in an 2D-array and stores it as the current
-	content of the puzzle. This is done to make a more efficient way of reading in a
-	predefined puzzle, if you want to avoid initializing a puzzle by clicking and using
-	setValue function. Before reading in the puzzle, the method should check if
-	the specified array has the right dimensions and legal values according to the
-	size of the puzzle.
+	function you can initialize auxiliary datastructures for FC algorithm.
 	*/
 	public void setup(int size1) {
 		size = size1;
