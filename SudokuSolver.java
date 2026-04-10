@@ -86,7 +86,26 @@ public class SudokuSolver implements ISudokuSolver {
 	size of the puzzle.
 	*/
 	public void readInPuzzle(int[][] p) {
-		puzzle = p;
+		// Does the array exist? Does the length match the correct size?
+		if (p == null || p.length != size * 3 || p[0].length != size * 3) {
+			return;
+		}
+
+		// Check if all values in p are valid
+		for (int i = 0; i < p.length; i++) {
+			for (int j = 0; j < p[i].length; j++) {
+				if (p[i][j] < 0 || p[i][j] > 9) {
+					return;
+				}
+			}
+		}
+
+		// Create deep copy
+		for (int i = 0; i < p.length; i++) {
+			for (int j = 0; j < p[i].length; j++) {
+				puzzle[i][j] = p[i][j];
+			}
+		}
 	}
 	
 
