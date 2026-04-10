@@ -64,6 +64,14 @@ public class SudokuSolver implements ISudokuSolver {
 		return true;
 	}
 
+	/*
+	The readInPuzzle(puzzle-array) reads in an 2D-array and stores it as the current
+	content of the puzzle. This is done to make a more efficient way of reading in a
+	predefined puzzle, if you want to avoid initializing a puzzle by clicking and using
+	setValue function. Before reading in the puzzle, the method should check if
+	the specified array has the right dimensions and legal values according to the
+	size of the puzzle.
+	*/
 	public void readInPuzzle(int[][] p) {
 		puzzle = p;
 	}
@@ -71,7 +79,7 @@ public class SudokuSolver implements ISudokuSolver {
 
 		private int getFirstZeroIndex(ArrayList<Integer> asn){
 			int index = 0;
-			for (int i = 0; i < asn.size()-1; i++) {
+			for (int i = 0; i < asn.size(); i++) {
 				if(asn.get(i) == 0){
 					index = i;
 					break;
