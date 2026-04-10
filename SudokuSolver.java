@@ -39,13 +39,21 @@ public class SudokuSolver implements ISudokuSolver {
 	function you can initialize auxiliary datastructures for FC algorithm.
 	*/
 	public void setup(int size1) {
-		size = size1;
-		puzzle = new int[size*size][size*size];
-		D = new ArrayList<ArrayList<Integer>>(size*size*size*size);
-		
-		//Initialize each D[X]...
-		
-	}
+    size = size1;
+    int n = size * size;
+    
+    puzzle = new int[n][n];
+    
+    D = new ArrayList<ArrayList<Integer>>(n * n);
+    
+    for (int i = 0; i < n * n; i++) {
+        ArrayList<Integer> domain = new ArrayList<Integer>();
+        for (int val = 1; val <= 9; val++) {
+            domain.add(val);
+        }
+        D.add(domain);
+    }
+}
 
 	/*
 	The most interesting (and hard) method to implement is the function solve().
@@ -199,7 +207,7 @@ public class SudokuSolver implements ISudokuSolver {
 		//				REVISE 
 		//------------------------------------------------------------------
 		public boolean REVISE(int Xi, int Xj){
-			Integer zero = new Integer(0);
+			Integer zero = 0;
 			
 			assert(Xi >= 0 && Xj >=0);
 			assert(Xi < size*size*size*size && Xj <size*size*size*size);
@@ -404,17 +412,16 @@ public class SudokuSolver implements ISudokuSolver {
 			ArrayList<Integer> asn = new ArrayList<Integer>();
 			for (int i=0; i<size*size; i++) {
 				for (int j=0; j<size*size; j++) {
-					asn.add(GetVariable(i,j), new Integer(p[i][j]));
+					asn.add(GetVariable(i,j), p[i][j]);
 					if (p[i][j] != 0){
-							//restrict domain
-							D.get(GetVariable(i,j)).clear();
-							D.get(GetVariable(i,j)).add(new Integer(p[i][j]));
-						}
+						D.get(GetVariable(i,j)).clear();
+						D.get(GetVariable(i,j)).add(p[i][j]);
+					}
 				}
 			}
 			return asn;
-		}	
-		
+		}
+
 		/*
 		getPuzzle() returns the content of the sudoku puzzle as a 2 dimensional
 		array of integers. If there are no inserted values in the puzzle the array should
