@@ -29,10 +29,10 @@ public class SudokuSolver implements ISudokuSolver {
 	the value 0.
 	*/
 	public void setValue(int col, int row, int value) {
-		if(col < puzzle.length || row < puzzle[0].length ){
+		if(col >= puzzle.length || row >= puzzle[0].length ){
 			return;
 		}
-		if (value >= 0 && value < 10){
+		if (value >= 0 && value <= 9){
 			puzzle[col][row] = value;
 		}		
 	}
@@ -69,11 +69,25 @@ public class SudokuSolver implements ISudokuSolver {
 	solution. To solve the puzzle, the FC algorithm should be used.
 	*/
 	public boolean solve() {
-		ArrayList<Integer> asn = GetAssignment(puzzle);
-		
-		//INITIAL_FC
-		//FC
+		int n = size * size;
+		D = new ArrayList<ArrayList<Integer>>(n * n);
+		for (int i = 0; i < n * n; i++) {
+			ArrayList<Integer> domain = new ArrayList<Integer>();
+			for (int val = 1; val <= 9; val++) {
+				domain.add(val);
+			}
+			D.add (domain);
+		}
+		ArrayList<Integer> asn = GetAssignment (puzzle);
 
+		if (!INITIAL_FC (asn)) {
+			return false;
+		}
+		ArrayList<Integer> result = FC (asn);
+		if (result == null) {
+			return false;
+		}
+		puzzle= GetPuzzle (result);
 		return true;
 	}
 
@@ -87,7 +101,7 @@ public class SudokuSolver implements ISudokuSolver {
 	*/
 	public void readInPuzzle(int[][] p) {
 		// Does the array exist? Does the length match the correct size?
-		if (p == null || p.length != size * 3 || p[0].length != size * 3) {
+		if (p == null || p.length != size * size || p[0].length != size * size) {
 			return;
 		}
 
@@ -135,8 +149,8 @@ public class SudokuSolver implements ISudokuSolver {
 				Dold.add(new ArrayList<>(domain));
 			}
 			//------------------------------------
-
-			for (Integer V : D.get(X)) { // for all V ∈ DX do
+			ArrayList<Integer> DX = new ArrayList<>(D.get(X));
+			for (Integer V : DX) { // for all V ∈ DX do
 				if (AC_FC(X, V)){ // if AC-FC(X, V ) then
 					asn.set(X, V); // asn[X] ← V
 					ArrayList<Integer> R = FC(asn); // R ←FC(asn)
@@ -263,6 +277,7 @@ public class SudokuSolver implements ISudokuSolver {
 				
 				if (hasSupport == false) {
 					Di.remove((Integer) vi);
+					i--;
 					DELETED = true;
 				}
 				
@@ -375,8 +390,10 @@ public class SudokuSolver implements ISudokuSolver {
 					boolean consistent = true;
 					while (!Q.isEmpty() && consistent){
 						Integer Y = (Integer) Q.remove(0);
-						if (REVISE(Y,i)) {
-							consistent = !D.get(Y).isEmpty();
+						if (anAssignment.get(Y) == 0) {
+							if (REVISE(Y,i)) {
+								consistent = !D.get(Y).isEmpty();
+							}
 						}
 					}	
 					if (!consistent) return false;
